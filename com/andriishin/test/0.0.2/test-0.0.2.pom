@@ -11,6 +11,16 @@
         <!-- github server corresponds to entry in ~/.m2/settings.xml -->
         <github.global.server>github</github.global.server>
     </properties>
+    <repositories>
+        <repository>
+            <id>andriishin-mvn-repo</id>
+            <url>https://raw.github.com/andriishin/mvn-repo/master/</url>
+            <snapshots>
+                <enabled>true</enabled>
+                <updatePolicy>always</updatePolicy>
+            </snapshots>
+        </repository>
+    </repositories>
     <distributionManagement>
         <repository>
             <id>internal.repo</id>
@@ -25,28 +35,32 @@
     <build>
         <plugins>
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>2.2.1</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>2.9</version>
+            </plugin>
+            <plugin>
                 <groupId>com.github.github</groupId>
                 <artifactId>site-maven-plugin</artifactId>
                 <version>0.7</version>
                 <configuration>
-                    <!-- git commit message -->
                     <message>Maven artifacts for ${project.groupId} ${project.artifactId} ${project.version}</message>
-                    <!-- disable webpage processing -->
                     <noJekyll>true</noJekyll>
-                    <!-- matches distribution management repository url above -->
                     <outputDirectory>${project.build.directory}/mvn-repo</outputDirectory>
-                    <!-- remote branch name -->
                     <branch>refs/heads/master</branch>
                     <includes>
                         <include>**/*</include>
                     </includes>
-                    <!-- github repo name -->
                     <repositoryName>mvn-repo</repositoryName>
-                    <!-- github username  -->
                     <repositoryOwner>andriishin</repositoryOwner>
+                    <merge>true</merge>
                 </configuration>
                 <executions>
-                    <!-- run site-maven-plugin's 'site' target as part of the build's normal 'deploy' phase -->
                     <execution>
                         <goals>
                             <goal>site</goal>
